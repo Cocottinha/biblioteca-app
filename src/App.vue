@@ -3,11 +3,11 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
+      <router-link v-if="!isAuthenticated" to="/login">Login</router-link>
       <router-link to="/register">Register</router-link>
       <router-link to="/books">Books</router-link>
       <router-link to="/booksForm">BooksForm</router-link>
-      <router-link to="/profile">Profile</router-link>
+      <router-link v-if="isAuthenticated" to="/profile">Profile</router-link>
     </nav>
     
     <!-- Render the active route's component here -->
@@ -16,8 +16,19 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'App',
+  created() {
+    this.checkSession();
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated']), // Verifica se o usuário está autenticado
+  },
+  methods: {
+    ...mapActions(['checkSession']),
+  },
 };
 </script>
 

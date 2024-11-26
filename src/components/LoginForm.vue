@@ -18,21 +18,22 @@ export default {
     };
   },
   methods: {
-    login() {
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      const user = users.find(
-        (user) =>
-          user.cpf === this.cpf && user.password === this.password
-      );
+  async login() {
+    const response = await fetch('http://localhost:3000/users');
+    const users = await response.json();
+    const user = users.find(
+      (u) => u.cpf === this.cpf && u.password === this.password
+    );
 
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        alert(`Bem-vindo, ${user.name}!`);
-        this.$router.push('/books');
-      } else {
-        alert('CPF ou senha inválidos');
-      }
-    },
+    if (user) {
+      this.$store.dispatch('login', user);
+      alert(`Bem-vindo, ${user.name}!`);
+      this.$router.push('/profile');
+    } else {
+      alert('CPF ou senha inválidos.');
+    }
   },
+},
+
 };
 </script>

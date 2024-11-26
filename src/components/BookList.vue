@@ -25,8 +25,12 @@ export default {
     };
   },
   mounted() {
-    this.books = JSON.parse(localStorage.getItem('books')) || [];
-  },
+  fetch('http://localhost:3000/data')
+    .then((response) => response.json())
+    .then((data) => {
+      this.books = data.books;
+    });
+}
 };
 </script>
 

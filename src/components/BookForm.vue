@@ -33,33 +33,59 @@ export default {
     };
   },
   methods: {
-    addBook() {
-      const books = JSON.parse(localStorage.getItem('books')) || [];
-      books.push({
-        title: this.title,
-        author: this.author,
-        isbn: this.isbn,
-        publisher: this.publisher,
-        subject: this.subject,
-        edition: this.edition,
-        inclusionDate: this.inclusionDate,
-        availability: this.availability,
+  async addBook() {
+    const newBook = {
+      title: this.title,
+      author: this.author,
+      isbn: this.isbn,
+      publisher: this.publisher,
+      subject: this.subject,
+      edition: this.edition,
+      inclusionDate: this.inclusionDate,
+      availability: this.availability,
+    };
+
+    try {
+      // Obter os dados do servidor
+      const response = await fetch('http://localhost:3000/data');
+      if (!response.ok) throw new Error('Erro ao obter os dados do servidor');
+      
+      const data = await response.json();
+
+      // Verificar se o array `books` existe; caso contrário, inicializá-lo
+      if (!data.books) data.books = [];
+
+      // Adicionar o novo livro
+      data.books.push(newBook);
+
+      // Enviar os dados atualizados de volta ao servidor
+      const saveResponse = await fetch('http://localhost:3000/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
-      localStorage.setItem('books', JSON.stringify(books));
+
+      if (!saveResponse.ok) throw new Error('Erro ao salvar os dados no servidor');
+
       alert('Livro adicionado com sucesso!');
       this.resetForm();
-    },
-    resetForm() {
-      this.title = '';
-      this.author = '';
-      this.isbn = '';
-      this.publisher = '';
-      this.subject = '';
-      this.edition = '';
-      this.inclusionDate = '';
-      this.availability = 'Disponível';
+    } catch (error) {
+      console.error(error);
+      alert('Ocorreu um erro: ' + error.message);
     }
   },
+  resetForm() {
+    this.title = '';
+    this.author = '';
+    this.isbn = '';
+    this.publisher = '';
+    this.subject = '';
+    this.edition = '';
+    this.inclusionDate = '';
+    this.availability = 'disponível';
+  },
+},
+
 };
 </script>
 <style>
