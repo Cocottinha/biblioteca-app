@@ -25,10 +25,10 @@ export default {
     };
   },
   mounted() {
-  fetch('http://localhost:3000/data')
+  fetch('http://localhost:3000/books')
     .then((response) => response.json())
     .then((data) => {
-      this.books = data.books;
+      this.books = data;
     });
 }
 };

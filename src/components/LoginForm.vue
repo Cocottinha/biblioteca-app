@@ -18,22 +18,38 @@ export default {
     };
   },
   methods: {
-  async login() {
-    const response = await fetch('http://localhost:3000/users');
-    const users = await response.json();
-    const user = users.find(
-      (u) => u.cpf === this.cpf && u.password === this.password
-    );
+    async login() {
+      try {
+        // Fetch all users
+        const response = await fetch('http://localhost:3000/users');
+        if (!response.ok) throw new Error('Erro ao buscar usuários.');
 
-    if (user) {
-      this.$store.dispatch('login', user);
-      alert(`Bem-vindo, ${user.name}!`);
-      this.$router.push('/profile');
-    } else {
-      alert('CPF ou senha inválidos.');
-    }
+        const data = await response.json();
+        const users = data || [];
+        const user = users.find(
+          (u) => u.cpf === this.cpf && u.password === this.password
+        );
+
+        if (user) {
+          // Send the logged-in user to the backend
+          const saveResponse = await fetch('http://localhost:3000/currentUser', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user),
+          });
+          this.$store.dispatch('login', user);
+          if (!saveResponse.ok) throw new Error('Erro ao salvar usuário logado.');
+
+          alert(`Bem-vindo, ${user.name}!`);
+          this.$router.push('/profile');
+        } else {
+          alert('CPF ou senha inválidos.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Erro: ' + error.message);
+      }
+    },
   },
-},
-
 };
 </script>

@@ -30,46 +30,43 @@ export default {
     };
   },
   methods: {
-  async register() {
-    const newUser = {
-      name: this.name,
-      cpf: this.cpf,
-      email: this.email,
-      password: this.password,
-      role: this.role,
-    };
+    async register() {
+      const newUser = {
+        name: this.name,
+        cpf: this.cpf,
+        email: this.email,
+        password: this.password,
+        role: this.role,
+      };
 
-    try {
-      // Obter dados do servidor
-      const response = await fetch('http://localhost:3000/data');
-      if (!response.ok) throw new Error('Erro ao obter dados do servidor');
-      
-      const data = await response.json();
+      try {
+        // Send the new user to the backend
+        const response = await fetch('http://localhost:3000/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
+        });
 
-      // Valide se o array `users` existe, senão inicialize
-      if (!data.users) data.users = [];
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage || 'Erro ao salvar usuário.');
+        }
 
-      // Adicionar o novo usuário
-      data.users.push(newUser);
-
-      // Salvar no servidor
-      const saveResponse = await fetch('http://localhost:3000/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!saveResponse.ok) throw new Error('Erro ao salvar dados no servidor');
-
-      alert('Usuário cadastrado com sucesso!');
-      this.resetForm();
-      this.$router.push('/login');
-    } catch (error) {
-      console.error(error);
-      alert('Ocorreu um erro: ' + error.message);
-    }
+        alert('Usuário cadastrado com sucesso!');
+        this.resetForm();
+        this.$router.push('/login');
+      } catch (error) {
+        console.error(error);
+        alert('Erro: ' + error.message);
+      }
+    },
+    resetForm() {
+      this.name = '';
+      this.cpf = '';
+      this.email = '';
+      this.password = '';
+      this.role = '';
+    },
   },
-}
-
 };
 </script>
