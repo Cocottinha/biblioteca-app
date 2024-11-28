@@ -34,57 +34,60 @@ export default {
   },
   methods: {
     async addBook() {
-  const newBook = {
-    title: this.title,
-    author: this.author,
-    isbn: this.isbn,
-    publisher: this.publisher,
-    subject: this.subject,
-    edition: this.edition,
-    inclusionDate: this.inclusionDate,
-    availability: this.availability,
-  };
+      const newBook = {
+        title: this.title,
+        author: this.author,
+        isbn: this.isbn,
+        publisher: this.publisher,
+        subject: this.subject,
+        edition: this.edition,
+        inclusionDate: this.inclusionDate,
+        availability: this.availability,
+      };
 
-  try {
-    // Add the new book directly via POST
-    const response = await fetch('http://localhost:3000/books', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newBook),
-    });
+      try {
+        // Add the new book directly via POST
+        const response = await fetch('http://localhost:3000/books', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newBook),
+        });
 
-    if (!response.ok) throw new Error('Erro ao salvar os dados no servidor');
+        if (!response.ok) throw new Error('Erro ao salvar os dados no servidor');
 
-    alert('Livro adicionado com sucesso!');
-    this.resetForm();
-  } catch (error) {
-    console.error(error);
-    alert('Ocorreu um erro: ' + error.message);
-  }
-},
+        alert('Livro adicionado com sucesso!');
+        this.resetForm();
+      } catch (error) {
+        console.error(error);
+        alert('Ocorreu um erro: ' + error.message);
+      }
+    },
 
-  resetForm() {
-    this.title = '';
-    this.author = '';
-    this.isbn = '';
-    this.publisher = '';
-    this.subject = '';
-    this.edition = '';
-    this.inclusionDate = '';
-    this.availability = 'disponível';
+    resetForm() {
+      this.title = '';
+      this.author = '';
+      this.isbn = '';
+      this.publisher = '';
+      this.subject = '';
+      this.edition = '';
+      this.inclusionDate = '';
+      this.availability = 'disponível';
+    },
   },
-},
 
 };
 </script>
 <style>
-  form{
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    gap: 20px;
-    input, select, button{
-      width: 200px;
-    }
+form {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 20px;
+
+  input,
+  select,
+  button {
+    width: 200px;
   }
+}
 </style>
