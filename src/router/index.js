@@ -6,6 +6,7 @@ import Register from '../components/RegisterForm.vue';
 import Books from '../components/BookList.vue';
 import Profile from '../views/ProfilePage.vue';
 import BookForm from '@/components/BookForm.vue';
+import Admin from '@/views/AdminPage.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -14,6 +15,7 @@ const routes = [
   { path: '/books', name: 'Books', component: Books, meta: {requiresAuth: true} },
   { path: '/booksForm', name: 'BooksForm', component: BookForm, meta: {requiresAuth: true} },
   { path: '/profile', name: 'Profile', component: Profile, meta: {requiresAuth: true} },
+  { path: '/admin', name: 'Admin', component: Admin, meta: {requiresAuth: true} },
 ];
 
 const router = createRouter({

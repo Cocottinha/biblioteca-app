@@ -10,22 +10,23 @@
     
 
     <h2>Livros Alugados</h2>
-    <ul class="list">
-      <li v-for="(book, index) in userBooks" :key="index">
-        <strong>Id do Livro:</strong> {{ book.bookId }}<br />
+    <div class="list">
+      <div v-for="(book, index) in userBooks" :key="index" class="vrau">
+        <strong>Id:</strong> {{ book.bookId }}<br />
         <strong>Título:</strong> {{ book.title }}<br />
         <strong>Data de Aquisição:</strong> {{ book.rentalDate }}<br />
         <strong>Data de Entrega:</strong> {{ book.returnDate }}<br />
         <strong>Status:</strong> 
         <span v-if="daysRemaining(book) >= 0">
-          {{ daysRemaining(book) }} dia(s) restante(s)
+          {{ daysRemaining(book) }} dia(s) restante(s)<br>
+          <button>Devolver Livro</button>
         </span>
         <span v-else>
-          Atrasado por {{ Math.abs(daysRemaining(book)) }} dia(s) - Multa: R$ {{ lateFee(book) }}
+          Atrasado por {{ Math.abs(daysRemaining(book)) }} dia(s) - Multa: R$ {{ lateFee(book) }}<br>
+          Dirija-se até a secretaria da faculdade para devolver o livro e pagar a multa!
         </span>
-        <hr />
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -75,6 +76,9 @@ export default {
       const feePerDay = 5; // Define late fee per day
       return daysOverdue > 0 ? daysOverdue * feePerDay : 0;
     },
+    blockUser(){
+
+    }
   },
 };
 </script>
@@ -97,5 +101,16 @@ export default {
     margin: 0 auto;
     background-color: red;
   }
+}
+.list{
+  margin: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.vrau{
+  gap: 10px;
+}
+button{
+  margin: 7px;
 }
 </style>

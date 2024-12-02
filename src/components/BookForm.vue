@@ -9,10 +9,6 @@
       <input type="text" v-model="subject" placeholder="Assunto" required />
       <input type="number" v-model="edition" placeholder="Edição" required />
       <input type="date" v-model="inclusionDate" placeholder="Data de Inclusão" required />
-      <select v-model="availability" required>
-        <option value="disponível">Disponível</option>
-        <option value="indisponível">Indisponível</option>
-      </select>
       <button type="submit">Adicionar</button>
     </form>
   </div>
@@ -29,7 +25,7 @@ export default {
       subject: '',
       edition: '',
       inclusionDate: '',
-      availability: 'disponível',
+      availability: true,
     };
   },
   methods: {
@@ -71,7 +67,7 @@ export default {
       this.subject = '';
       this.edition = '';
       this.inclusionDate = '';
-      this.availability = 'disponível';
+      this.availability = true;
     },
   },
 
