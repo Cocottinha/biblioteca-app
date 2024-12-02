@@ -31,6 +31,12 @@ export default {
         );
 
         if (user) {
+          // Check if the user is blocked
+          if (user.blocked) {
+            alert('Sua conta está bloqueada. Entre em contato com o suporte.');
+            return;
+          }
+
           // Send the logged-in user to the backend
           const saveResponse = await fetch('http://localhost:3000/currentUser', {
             method: 'POST',
