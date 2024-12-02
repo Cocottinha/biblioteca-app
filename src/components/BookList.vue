@@ -1,19 +1,18 @@
 <template>
   <div>
     <h2>Lista de Livros</h2>
-    <ul>
-      <li v-for="(book, index) in books" :key="index">
-        <strong>Título:</strong> {{ book.title }}<br />
-        <strong>Autor:</strong> {{ book.author }}<br />
-        <strong>ISBN:</strong> {{ book.isbn }}<br />
-        <strong>Editora:</strong> {{ book.publisher }}<br />
-        <strong>Assunto:</strong> {{ book.subject }}<br />
-        <strong>Edição:</strong> {{ book.edition }}<br />
-        <strong>Data de Inclusão:</strong> {{ book.inclusionDate }}<br />
-        <strong>Disponibilidade:</strong> {{ book.availability }}<br />
+    <ul class="center">
+      <li v-for="(book, index) in books" :key="index" class="listaLivros">
+        <span>Título: {{ book.title }}</span> 
+        <span>Autor:  {{ book.author }}</span>
+        <span>ISBN:  {{ book.isbn }}</span>
+        <span>Editora:  {{ book.publisher }}</span>
+        <span>Assunto:  {{ book.subject }}</span>
+        <span>Edição:  {{ book.edition }}</span>
+        <span>Data de Inclusão:  {{ book.inclusionDate }}</span>  
         <button
           v-if="book.availability === 'disponível'"
-          @click="rentBook(book.id)"
+          @click="rentBook(book.id, book.title)"
         >
           Alugar Livro
         </button>
@@ -40,7 +39,7 @@ export default {
       });
   },
   methods: {
-  async rentBook(bookId) {
+  async rentBook(bookId, title) {
     const userCpf = JSON.parse(localStorage.getItem('auth'))?.user.cpf;
 
     if (!userCpf) {
@@ -51,6 +50,7 @@ export default {
     const rentalData = {
       bookId,
       userCpf,
+      title,
       rentalDate: new Date().toISOString().split('T')[0], // Current date
     };
 
@@ -64,7 +64,7 @@ export default {
 
       if (!response.ok) throw new Error('Erro ao registrar o aluguel');
 
-      console.log(bookId);
+      console.log(bookId, title);
       // Update book availability in books.json
       const updateResponse = await fetch(`http://localhost:3000/books/${bookId}`, {
         method: 'PATCH',
@@ -96,14 +96,24 @@ export default {
 ul {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 li {
   margin-bottom: 20px;
 }
-
+.listaLivros{
+  display: flex;
+  flex-direction: row;
+  place-items: center;
+  text-align: justify;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+}
 button {
-  margin-top: 10px;
   padding: 5px 10px;
   cursor: pointer;
   background-color: #4caf50;
@@ -119,4 +129,5 @@ button:hover {
 span {
   font-weight: bold;
 }
+
 </style>
