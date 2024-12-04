@@ -61,5 +61,6 @@ export default createStore({
     isAuthenticated: (state) => !!state.user,
     currentUser: (state) => state.user,
     isAdmin: (state) => state.user?.role === 'Administrador',
+    isGerente: (state) => state.user?.role === 'Gerente',
   },
 });

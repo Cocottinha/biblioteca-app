@@ -6,7 +6,7 @@
       <router-link v-if="!isAuthenticated" to="/login">Entrar</router-link>
       <router-link v-if="!isAuthenticated" to="/register">Cadastrar</router-link>
       <router-link v-if="isAuthenticated" to="/books">Livros</router-link>
-      <router-link v-if="isAuthenticated" to="/booksForm">Cadastrar Livro</router-link>
+      <router-link v-if="isAdmin || isGerente" to="/booksForm">Cadastrar Livro</router-link>
       <router-link v-if="isAuthenticated" to="/profile">Perfil</router-link>
       <router-link v-if="isAdmin" to="/admin">Admin</router-link>
     </nav>
@@ -25,7 +25,7 @@ export default {
     this.checkSession();
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'isAdmin']), // Verifica se o usuário está autenticado
+    ...mapGetters(['isAuthenticated', 'isAdmin', 'isGerente']), // Verifica se o usuário está autenticado
   },
   methods: {
     ...mapActions(['checkSession']),
